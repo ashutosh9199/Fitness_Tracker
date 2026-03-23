@@ -23,7 +23,7 @@ spec:
         ports:
         - containerPort: 5000
 
-        #  Load environment variables from ConfigMap
+        # Load environment variables from ConfigMap
         envFrom:
         - configMapRef:
             name: fitness-configmap
@@ -53,4 +53,4 @@ spec:
   ports:
   - port: 80
     targetPort: 5000
-  type:ClusterIP
+  type: ClusterIP
