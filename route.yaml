@@ -4,18 +4,18 @@ metadata:
   name: fitness-tracker-route
 spec:
   parentRefs:
-  - name: ashu-gateway
+    - name: ashu-gateway
   rules:
-  - matches:
-      - path:
-          type: PathPrefix
-          value: /fitness
-    filters:
-      - type: URLRewrite
-        urlRewrite:
-          path:
-            type: ReplacePrefixMatch
-            replacePrefixMatch: /
-    backendRefs:
-      - name: fitness-tracker-service
-        port: 80
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      # filters:
+      #   - type: URLRewrite
+      #     urlRewrite:
+      #       path:
+      #         type: ReplacePrefixMatch
+      #         replacePrefixMatch: /
+      backendRefs:
+        - name: fitness-tracker-service
+          port: 80
