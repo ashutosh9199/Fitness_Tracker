@@ -1,0 +1,14 @@
+# gw-nodeport.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: gw-nodeport
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    gateway.networking.k8s.io/gateway-name: example-gateway
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
