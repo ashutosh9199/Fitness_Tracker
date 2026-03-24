@@ -4,6 +4,11 @@ metadata:
   name: mongodb
 spec:
   replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
   selector:
     matchLabels:
       app: mongodb
@@ -22,7 +27,7 @@ spec:
               memory: "256Mi"
               cpu: "100m"
             limits:
-              memory: "512Mi"   # 🔥 very low → OOM
+              memory: "512Mi"
               cpu: "200m"
           volumeMounts:
             - name: ashutosh-vol
@@ -30,4 +35,16 @@ spec:
       volumes:
         - name: ashutosh-vol
           emptyDir:
-            sizeLimit: "128Mi"
+            sizeLimit: "512Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongodb-service
+spec:
+  selector:
+    app: mongodb
+  ports:
+    - port: 27017
+      targetPort: 27017
+  type: ClusterIP
