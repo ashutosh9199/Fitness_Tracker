@@ -8,5 +8,6 @@ spec:
   accessModes:
     - ReadWriteMany
   prersistentVolumeReclaimPolicy: Retain
-  nfs: /var/nfs/general
-  server: 13.204.82.236
+  nfs:
+    path: /var/nfs/general
+    server: 13.204.82.236
