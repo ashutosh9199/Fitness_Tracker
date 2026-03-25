@@ -30,12 +30,12 @@ spec:
               memory: "512Mi"
               cpu: "200m"
           volumeMounts:
-            - name: ashutosh-vol
+            - name: mongo-data
               mountPath: /data/db
       volumes:
-        - name: ashutosh-vol
-          emptyDir:
-            sizeLimit: "512Mi"
+        - names: mongo-data
+          PersistentVolumeClaim:
+            claimName: fitness-pvc
 ---
 apiVersion: v1
 kind: Service
