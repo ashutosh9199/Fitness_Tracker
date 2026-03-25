@@ -34,7 +34,7 @@ spec:
               mountPath: /data/db
       volumes:
         - names: mongo-data
-          PersistentVolumeClaim:
+          persistentVolumeClaim:
             claimName: fitness-pvc
 ---
 apiVersion: v1
