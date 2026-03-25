@@ -6,7 +6,7 @@ spec:
   capacity:
     storage: 10Gi
   accessModes:
-    - ReadWritemany
+    - ReadWriteMany
   prersistentVolumeReclaimPolicy: Retain
   nfs: /var/nfs/general
   server: 13.204.82.236
