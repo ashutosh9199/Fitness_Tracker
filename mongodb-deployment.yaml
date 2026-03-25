@@ -17,6 +17,8 @@ spec:
       labels:
         app: mongodb
     spec:
+      securityContext:
+        fsGroup: 999
       containers:
         - name: mongodb
           image: mongo:7-jammy
@@ -33,18 +35,6 @@ spec:
             - name: mongo-data
               mountPath: /data/db
       volumes:
-        - names: mongo-data
+        - name: mongo-data
           persistentVolumeClaim:
             claimName: fitness-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongodb-service
-spec:
-  selector:
-    app: mongodb
-  ports:
-    - port: 27017
-      targetPort: 27017
-  type: ClusterIP
