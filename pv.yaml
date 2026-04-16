@@ -9,5 +9,5 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    path: /var/nfs/general
+    path: /nfs/etcd-backup
     server: 172.31.0.32
