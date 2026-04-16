@@ -10,4 +10,4 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     path: /var/nfs/general
-    server: 13.204.82.236
+    server: 172.31.0.32
