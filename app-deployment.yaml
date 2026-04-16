@@ -4,14 +4,16 @@ metadata:
   name: fitness-tracker-app
 spec:
   replicas: 2
-strategy:
+  strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxUnavailabel: 25%
+      maxUnavailable: 25%
       maxSurge: 25%
+
   selector:
     matchLabels:
       app: fitness-tracker-app
+
   template:
     metadata:
       labels:
@@ -20,12 +22,15 @@ strategy:
         ad.datadoghq.com/fitness-tracker-app.logs: >-
           [{"source":"nodejs","service":"fitness-tracker-service"},
            {"source":"nodejs","service":"fitness-tracker-app"}]
+
     spec:
       containers:
         - name: fitness-tracker-app
           image: pulkit197/fitness_tracker-master-copy3-fitness-app:latest
+
           ports:
             - containerPort: 5000
+
           resources:
             requests:
               memory: "256Mi"
@@ -34,12 +39,10 @@ strategy:
               memory: "512Mi"
               cpu: "200m"
 
-          # Load environment variables from ConfigMap
           envFrom:
             - configMapRef:
                 name: fitness-configmap
 
-          # Explicit environment variables
           env:
             - name: DD_AGENT_HOST
               valueFrom:
