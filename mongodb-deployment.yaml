@@ -31,10 +31,10 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "100m"
-          volumeMounts:
-            - name: mongo-data
-              mountPath: /data/db
-      volumes:
-        - name: mongo-data
-          persistentVolumeClaim:
-            claimName: fitness-pvc
+          #volumeMounts:
+           # - name: mongo-data
+             # mountPath: /data/db
+      #volumes:
+        #- name: mongo-data
+          #persistentVolumeClaim:
+            #claimName: fitness-pvc
