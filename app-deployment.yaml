@@ -25,8 +25,8 @@ spec:
 
     spec:
       containers:
-        - name: fitness-tracker-app
-          image: pulkit197/fitness_tracker-master-copy3-fitness-app:latest
+        - name: fitness-tracker-app/
+          image: ashutoshregistry.azurecr.io/fitnessapp:latest
 
           ports:
             - containerPort: 5000
