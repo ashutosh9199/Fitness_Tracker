@@ -31,7 +31,7 @@ steps:
     command: buildAndPush
     repository: $(imageRepository)
     dockerfile: Dockerfile
-    containerRegistry: acr-connection
+    containerRegistry: 'acr-connection'
     tags: |
       $(imageTag)
       latest
@@ -41,7 +41,7 @@ steps:
   displayName: Deploy to AKS
   inputs:
     action: deploy
-    kubernetesServiceConnection: aks-connection
+    kubernetesServiceConnection: 'aks-connection'
     namespace: default
     manifests: |
       app-deployment.yaml
