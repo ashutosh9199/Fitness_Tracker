@@ -3,69 +3,69 @@ trigger:
   branches:
     include:
       - master
- 
+
 pool:
-  vmImage: 'ubuntu-latest'
- 
+  vmImage: ubuntu-latest
+
 variables:
-  imageRepository: 'fitnessapp'
-  imageTag: '$(Build.BuildId)'
- 
+  imageRepository: fitnessapp
+  imageTag: $(Build.BuildId)
+
 steps:
- 
+
 # Install Node.js
 - task: NodeTool@0
-  displayName: 'Install Node.js'
   inputs:
     versionSpec: '20.x'
- 
-# Install dependencies
+  displayName: Install Node.js
+
+# Install Dependencies
 - script: |
     npm install
-  displayName: 'Install Dependencies'
- 
-# Build and Push Docker Image
+  displayName: Install Dependencies
+
+# Build & Push Image to ACR
 - task: Docker@2
-  displayName: 'Build and Push Docker Image'
+  displayName: Build and Push Docker Image
   inputs:
-    command: 'buildAndPush'
-    repository: '$(imageRepository)'
-    dockerfile: '**/Dockerfile'
-    containerRegistry: 'acr-connection' //add your azure container registry connection name
+    command: buildAndPush
+    repository: $(imageRepository)
+    dockerfile: Dockerfile
+    containerRegistry: acr-connection
     tags: |
       $(imageTag)
       latest
- 
+
 # Deploy to AKS
 - task: KubernetesManifest@1
-  displayName: 'Deploy to AKS'
+  displayName: Deploy to AKS
   inputs:
-    action: 'deploy'
-    kubernetesServiceConnection: 'aks-connection' //add your azure  kubernetes connection name
-    namespace: 'default'
+    action: deploy
+    kubernetesServiceConnection: aks-connection
+    namespace: default
     manifests: |
-      app-deployment.yaml // add your deployment file name with file location
-      configmap.yml //     add your deployment file name with file location
-      mongodb-deployment.yaml // add your deployment file name with file location
+      k8s/app-deployment.yaml
+      k8s/configmap.yaml
+      k8s/mongodb-deployment.yaml
     containers: |
-      ashutoshregistry.azurecr.io/$(imageRepository):$(imageTag)    //here add your azure conatiner registry login servername
- 
+      ashutoshregistry.azurecr.io/$(imageRepository):$(imageTag)
+
 # Slack Notification
 - task: Bash@3
-  displayName: 'Slack Notification'
+  displayName: Slack Notification
   condition: always()
   inputs:
-    targetType: 'inline'
+    targetType: inline
     script: |
       if [ "$(Agent.JobStatus)" = "Succeeded" ]; then
-        MESSAGE="✅ Pipeline SUCCESS | Project: $(System.TeamProject) | Repo: $(Build.Repository.Name) | Branch: $(Build.SourceBranchName) | Build: $(Build.BuildNumber)"
+        MESSAGE="✅ Pipeline SUCCESS | Repo: $(Build.Repository.Name) | Build: $(Build.BuildNumber)"
       else
-        MESSAGE="❌ Pipeline FAILED | Project: $(System.TeamProject) | Repo: $(Build.Repository.Name) | Branch: $(Build.SourceBranchName) | Build: $(Build.BuildNumber)"
+        MESSAGE="❌ Pipeline FAILED | Repo: $(Build.Repository.Name) | Build: $(Build.BuildNumber)"
       fi
- 
+
       curl -X POST \
-        -H "Content-Type: application/json" \
-        --data "{\"text\":\"$MESSAGE\"}" \
-        "$SLACK_WEBHOOK_URL"
+      -H "Content-Type: application/json" \
+      --data "{\"text\":\"$MESSAGE\"}" \
+      "$SLACK_WEBHOOK_URL"
   env:
     SLACK_WEBHOOK_URL: $(SLACK_WEBHOOK_URL)
